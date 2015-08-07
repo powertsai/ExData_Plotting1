@@ -54,11 +54,13 @@ source("plot1.R")
 #plot2
 source("plot2.R")
 ```
+
 4. create plot3
 ```{r}
 #plot3
 source("plot3.R")
 ```
+
 5. create plot4
 ```{r}
 #plot4
