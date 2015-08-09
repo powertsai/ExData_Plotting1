@@ -5,63 +5,59 @@ date: "2015年8月7日"
 output: html_document
 ---
 
-### require libraries
-  1. library(dplyr): easy to get the dataset for plot
-  1. library(lubridate): easy to parse date object
-### R scripts in ExData_Plotting1 repo
+### load required libraries
+```{r}
+# require library dplyr to mutate, filter data on 2007/02/01 and 2007/02/02
+library(dplyr)
+# require lubridate to get year, month, mday to filter data
+library(lubridate)
+```
+
+### set workspace and define data set filename 
+```{r}
+# work directory with 5 R script and data set file insize
+setwd("/Users/hadoop/ExData_Plotting1")
+
+# define dataset filename
+fileName= "household_power_consumption.txt"
+```
 
 ### CourseProject1.R: 
   1. predict required memory to read the whole file "household_power_consumption.txt"
-  1. getData: 
+  1. getData function: 
      1. for performance issue, skip first 63000 rows and read 20000 rows only
      1. mutate data set to create weekday, year, month , mday, hour, minute, second
-     1. filter dataset for whole day(2007/02/01, 2007/02/02), and 2007/02/03 00:00:00 [print Axis at Sat]
-  1. setXAxis
-     1. pickup datetime at 00:00:00 , to draw axis by weekday
-  1. plotEnergySubMetering: plot energy sub metering
-  
-### plot1.R: create plot1
-    histogram of global active power
-
-### plot2.R: create plot2
-    xyplot of global active power v.s. datetime
-
-### plot3.R: create plot3
-    xyplot Energy Sub metering plot v.s. datetime
-
-### plot4.R: create plot4
-    create 4 plots in one png
-
-### How to create 4 plots
-1. set workspace to the path with 5 R scripts and date set 
+     1. filter dataset from 2007/02/01 to 2007/02/03(make plot and axis)
+  1. setXAxis function
+     1. filter datetime at 00:00:00, and makes axis by weekday
+  1. plotEnergySubMetering function
+     1. plot Sub_metering_1 v.s datetime
+     1. lines Sub_metering_2 v.s datetime
+     1. lines Sub_metering_3 v.s datetime
+     1. create legend
 ```{r}
-#set environment
-setwd("/Users/hadoop/ExData_Plotting1")
-#create common script to read data, plot sub metering , draw axis with 
+#define function for plotting
 source("CourseProject1.R")
-
-# define dataset filename
-fileName="household_power_consumption.txt"
 ```
 
-2. create plot1
+### plot1: histogram of global active power and save to png 
 ```{r}
 source("plot1.R")
 ```
 
-3. create plot2
+### plot2: xyplot of global active power v.s. datetime and save to png
 ```{r}
 #plot2
 source("plot2.R")
 ```
 
-4. create plot3
+### plot3: xyplot Energy Sub metering plot v.s. datetime  and save to png 
 ```{r}
 #plot3
 source("plot3.R")
 ```
 
-5. create plot4
+### plot4: create 4 plots in one plot  and save to png 
 ```{r}
 #plot4
 source("plot4.R")
