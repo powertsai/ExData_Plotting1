@@ -1,19 +1,23 @@
 #memory required = no. of column * no. of rows * 8 bytes
-print(paste("require memory", (9 * 2075260 * 8)/1024/1024, "MB"))
+print(paste("require memory [column * rows * 8 / 1024^2 ](MB) =", (9 * 2075260 * 8)/1024/1024, "MB"))
+
+#predict memory required to read file
+household_data_first1000 <- read.table(file=fileName, nrows = 1000, skip=0,
+                                       header = TRUE, sep =";", stringsAsFactors =  FALSE)
+data_size <- object.size(household_data_first1000) 
+memSize <- data_size * 2075260 /1000 / 1024 / 1024
+print(paste("predict memory[read 1000 rows to get object size first]:", memSize, "MB"))
+
 
 #for performance issue using vi to find the possible range by 20000 rows only 
 #then uses dplyr, lubridate packages to filter dataset on 2007/02/01, 2007/02/02
 getData <- function(fileName = fileName,...) {
-  #predict memory required to read file
-  household_data_first1000 <- read.table(file=fileName, nrows = 1000, skip=0,
+  household_data_first100 <- read.table(file=fileName, nrows = 100, skip=0,
                                          header = TRUE, sep =";", stringsAsFactors =  FALSE)
-  data_size <- object.size(household_data_first1000) 
-  memSize <- data_size * 2075260 /1000 / 1024 / 1024
-  print(paste("predict memory usage:", memSize, "MB"))
-    
+  
   #skip 63000 rows and read 20000 rows only
   household_data <- read.table(file=fileName,...)
-  names(household_data) <- names(household_data_first1000)
+  names(household_data) <- names(household_data_first100)
   # require library dplyr to use mutate, filter to get date in 2007/02/01, 2007/02/02
   library(dplyr)
   # require lubridate to get year, month, mday to filter data
@@ -29,9 +33,8 @@ getData <- function(fileName = fileName,...) {
     mutate(hour = hour(datetime)) %>%
     mutate(minute = minute(datetime)) %>%
     mutate(second = second(datetime)) %>%
-    filter(   (year == 2007 & month == 2 & mday %in% c(1,2) ) |
-              (year == 2007 & month == 2 & mday ==3 &
-               hour == 0 & minute == 0 & second == 0)   
+    filter(   
+      (year == 2007 & month == 2 & mday %in% c(1,2,3) )
     )
 }
 
@@ -76,7 +79,5 @@ plotEnergySubMetering <- function (subset_household_data, bty = "o", legendCex =
          cex=legendCex, pt.cex = 1,
          legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
   
-  #set X-Axis by the weekday of datetime at 00:00:00
-  setXAxis(subset_household_data)
 }
 

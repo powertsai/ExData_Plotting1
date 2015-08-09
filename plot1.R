@@ -1,7 +1,11 @@
-#load data
-subset_household_data <- getData(fileName, 
+
+#load data 2007/02/01~2007/02/03
+household_data <- getData(fileName, 
                                  skip = 63000, nrows = 20000, 
                                  header = TRUE, sep =";", stringsAsFactors =  FALSE)
+
+subset_household_data <- filter(household_data, 
+                                year == 2007 & month == 2 & mday %in% c(1,2))
 #check dataset by head
 head(subset_household_data)
 #check dataset by tail
